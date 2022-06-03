@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html>
+<!-- easter egg 4 -->
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Genius Gerrymandering</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/contrib/auto-render.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "$", right: "$", display: false},
+        ],
+        strict: false,
+        trust: true,
+      });
+    });
+  </script>
+</head>
+
+<body>
+  <div class="main">
+    <div style="padding:2em 0;">
+      <h1 class="big"
+        title="*whispers* so how can we secretly rig the system... Sorry, I didn't see you there. Let's begin">Genius
+        Gerrymandering with inteGers<sup>*</sup></h1>
+      <p title="Eagerly Expect Eight Easter Eggs' Existence (Easter Egg 1)"><sup>*</sup><b>Great <a class="text" href="https://www.youtube.com/watch?v=pTG_6ypYSS4">alGor</a>ithms for
+          proGramming</b></p> 
+      <p style="color:#333;">By <span class="rhover">Zach</span>, Milo, Mikail, and Josh</p>
+      <p style="color:#fff">Hidden text? We would <i>never</i> do such a thing (Easter Egg 2)</p>
+    </div>
+
+    <h1>Introduction</h1>
+    <p>
+      <b>Gerrymandering</b> is when the ruling political party redraws voting district boundaries to benefit themselves.
+      This issue is particularly felt by voters in the opposing party, since their legislators are less likely to
+      respond to their concerns. Gerrymandering is particularly felt amongst minority groups, as they are often either
+      “cracked” across multiple districts (to dilute their ability to influence each election) or “packed” into one
+      district (to prevent them from influencing more than one election). Additionally, the lack of competition within
+      districts means that it is harder for new candidates to challenge incumbents.
+    </p>
+    <p>
+      Many people have tried to solve this issue by using integer programming to have computers draw fair and
+      non-partisan districts. This website will look at how this may be achieved.
+    </p>
+
+
+    <h1>Anecdote</h1>
+    <p>
+      In the 2000 New York State Assembly redistricting, Hakeem Jeffries “ran a strong challenge in a Democratic
+      primary” against the candidate supported by the Democratic party in 2000. However, he was unable to run in the
+      same district again because the new district lines “literally carved out the block on which Hakeem Jeffries lived”
+      (Oliver, 2017). This both harmed Jeffries, who was unable to get the votes of the people who he had won over in
+      the previous election, and harmed his past constituents, many of whom had “hoped to vote for” Jeffries (Oliver,
+      2017). </p>
+    </p>
+    <h1>
+      History of Gerrymandering
+    </h1>
+    <p>
+      The feasible implementation of algorithmic approaches to redistricting requires computers, so using integer
+      programming to approach gerrymandering was not considered until the 1960s. Even then, the literature was focused
+      on explaining the value of using computers and outlining the criteria to maximize. For example, Weaver and Hess’s
+      “A Procedure for Nonpartisan Districting: Development of Computer Techniques” (1963) begins by discussing why
+      computer-based redistricting is helpful (because a nonpartisan algorithm is difficult for legislatures to sway)
+      and later describes criteria that redistricting systems should have, such as keeping districts compact and
+      centering them around major population centers. Another paper from this time period – Nagel’s “Computers and the
+      Law and Politics of Redistricting” (1972) – proceeds similarly: it states six(!) reasons why using computers for
+      redistricting is useful and then explains the three major criteria that redistricting systems should be judged by:
+      “computer feasibility, federal and state legality, and political realism” (p. 78).
+    </p>
+    <p>
+      However, now that redistricting algorithms have become more popular, modern papers on redistricting assume that
+      readers are familiar with the basics and dig deeply into their specific advances. For example, Landau, Reid, and
+      Yershov’s “A Fair Division Solution to the Problem of Redistricting” (2009) explains an algorithm which can be
+      used for two partisan actors to agree upon a new electoral map, and Carman’s “Repairing Redistricting” (2021)
+      defines seven criteria which they sought to optimize, describes the process they used to create mathematical
+      implementations of their criteria, and then showed examples of the maps which they produced. (We will elaborate
+      further on Carman’s paper in the next section of this website.)
+    </p>
+
+    <h1>
+      Mathematical Model
+    </h1>
+
+    <h1>Analysis</h1>
+
+    <p>
+      $$
+      \begin{align*}
+      \text{Unit} &= \text{smallest subset of a region }(i) \\
+      \text{District} &= \text{geographically compact collection of units }(j)
+      \end{align*}
+      $$
+    </p>
+
+    <p>
+      Here's an interactive map to demonstrate the effects of gerrymandering. Use the checkbox to toggle between a map in which Democrats (blue) win and Republicans (red) win. Hover over each unit to see which district they are a part of and how that district votes. Other variables that our model uses can be found in the box to the side and are outlined below.
+      Try to count how many districts are red and blue to see who wins, then click the checkbox and count again.
+    </p>
+
+    <label>Good for democrats <input type="checkbox" id="mycheck" /></label>
+    <div class="split">
+      <svg id="map" width="280" height="466" viewBox="0 0 280 466" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path id="p23"
+          d="M128.39 426.8C126.024 426.401 123.974 426.056 121.715 425.676C125.773 416.763 130.374 408.563 135.947 400.661C136.588 401.967 136.854 403.288 137.66 403.936C138.439 404.561 139.769 404.533 140.868 404.713C156.614 407.301 172.362 409.87 188.107 412.46C189.053 412.616 189.972 412.933 191.175 413.245C180.247 430.332 167.953 446.307 160.315 465.176C147.359 463.755 134.39 462.335 121.137 460.881C121.137 456.486 121.072 452.26 121.189 448.04C121.215 447.113 121.767 446.13 122.284 445.301C125.808 439.658 126.348 433.097 128.39 426.8Z"
+          class="democrat"
+          fill="white"></path>
+        <path id="p22"
+          d="M120.169 446.228C118.82 445.581 117.7 445.071 116.603 444.513C111.475 441.907 110.789 442.007 106.493 446.372C97.8926 442.756 89.0988 439.057 80.0801 435.264C82.1063 432.408 83.9263 429.761 85.8313 427.177C88.0851 424.123 88.8288 420.658 88.8301 416.961C88.8313 412.343 88.7151 407.718 88.8938 403.104C88.9576 401.446 89.4551 399.671 90.2301 398.198C92.0201 394.788 94.1013 391.529 96.3301 387.763C104.261 391.254 112.07 394.694 120.245 398.293C118.493 401.228 116.861 403.961 114.951 407.153C118.836 408.989 122.599 410.768 126.813 412.758C124.511 417.326 122.258 421.792 119.806 426.658C122.376 427.036 124.419 427.337 126.905 427.702C125.061 434.033 124.419 440.529 120.169 446.228Z"
+          class="republican"
+          fill="white"></path>
+        <path id="p21"
+          d="M78.925 434.399C77.285 434.129 76.065 433.929 75.255 433.797C74.3487 431.296 73.4837 429.031 72.7325 426.732C72.5662 426.223 72.7787 425.581 72.845 425.003C72.9737 423.921 73.125 422.842 73.2062 422.209C70.895 420.413 68.9937 418.893 67.0412 417.444C66.5775 417.099 65.9412 416.786 65.3912 416.793C63.7062 416.826 62.3475 416.597 61.13 415.103C60.6762 414.548 58.8725 414.829 57.7975 415.132C57.06 415.342 56.3012 416.137 55.9275 416.861C53.8862 420.811 50.8325 421.196 46.655 420.678C31.9162 418.857 17.1175 417.508 2.34248 415.973C1.97748 415.937 1.62373 415.794 0.79248 415.579C1.31873 414.663 1.57873 413.616 2.24498 413.154C5.74373 410.733 7.13123 407.426 6.85998 403.282C6.64748 400.053 6.27373 396.819 6.32873 393.593C6.41248 388.522 7.76623 383.949 12.73 381.386C14.825 380.304 17.105 379.532 19.0662 378.257C21.2425 376.843 23.2762 375.146 25.1412 373.332C26.7362 371.779 28.3562 371.357 30.51 371.742C45.8612 374.481 61.2575 376.977 76.575 379.896C83.055 381.131 88.8462 384.447 95.2275 387.274C93.1962 390.737 91.4475 393.873 89.5387 396.912C88.3025 398.882 87.6775 400.884 87.7725 403.244C87.9225 406.986 87.6362 410.746 87.8537 414.481C88.1737 419.997 86.5725 424.811 83.2175 429.104C81.84 430.872 80.3975 432.589 78.925 434.399Z"
+          class="republican"
+          fill="white"></path>
+        <path id="p20"
+          d="M227.985 365.944C229.34 369.924 230.628 373.686 231.903 377.454C234.3 384.541 236.639 391.649 239.105 398.713C240.089 401.525 241.296 404.268 242.49 407.003C245.004 412.76 245.801 413.674 240.736 418.823C240.224 419.345 239.764 419.918 239.165 420.598C239.925 421.695 240.618 422.694 240.958 423.185C240.958 425.469 240.501 427.383 241.06 428.934C241.986 431.508 241.359 433.261 239.384 434.81C238.896 435.193 238.363 435.516 237.791 435.905C239.465 439.386 240.958 442.493 242.605 445.925C236.371 448.91 230.33 451.798 223.861 454.893C222.23 450.554 220.678 446.428 218.909 441.728C216.316 444.841 214.05 447.565 211.409 450.738C210.884 449.47 210.496 448.634 210.184 447.769C205.79 435.569 201.411 423.364 197.009 411.165C196.45 409.62 196.069 408.318 197.126 406.636C205.92 392.663 215.72 379.454 226.646 367.075C226.963 366.718 227.381 366.449 227.985 365.944Z"
+          class="republican"
+          fill="white"></path>
+        <path id="p19"
+          d="M138.323 402.976C136.893 400.173 137.412 397.87 139.204 395.335C147.279 383.916 155.157 372.359 163.111 360.856C163.887 359.731 164.693 358.63 165.793 357.089C183.799 362.131 201.868 367.195 220.224 372.338C215.179 379.078 210.226 385.404 205.596 391.959C200.993 398.474 196.714 405.218 192.291 411.864C174.156 408.878 156.217 405.924 138.323 402.976Z"
+          class="democrat"
+          fill="white"></path>
+        <path id="p18"
+          d="M102.111 338.231C120.969 347.344 139.456 356.278 158.36 365.41C147.917 380.816 137.607 396.023 127.112 411.508C123.755 409.989 120.28 408.415 116.534 406.72C118.392 403.699 120.072 400.971 122 397.84C108.621 391.914 95.5774 386.138 82.2549 380.236C88.8836 366.209 95.4186 352.39 102.111 338.231Z"
+          class="democrat"
+          fill="white"></path>
+        <path id="p17"
+          d="M81.325 379.484C63.67 376.404 46.6 373.425 29.9212 370.518C28.8275 368.315 27.9337 366.471 26.9962 364.644C25.6775 362.07 26.3512 359.529 27.0762 356.99C27.6825 354.865 28.3175 352.749 29.1237 349.998C30.4312 349.178 32.3087 348 34.5012 346.623C34.5012 345.003 34.44 343.27 34.515 341.545C34.6237 339.015 35.4412 336.785 36.7525 334.526C38.1475 332.12 38.7875 329.258 39.61 326.551C39.8025 325.918 39.5037 325.071 39.2675 324.379C38.03 320.775 37.9875 320.425 38.8325 316.109C59.4437 323.288 80.0025 330.45 101.016 337.771C94.33 351.935 87.8 365.768 81.325 379.484Z"
+          class="democrat"
+          fill="white"></path>
+        <path id="p16"
+          d="M246.827 340.203C247.997 339.629 248.985 339.141 250.185 338.551C251.57 341.671 253.109 344.603 254.202 347.691C258.077 358.634 261.755 369.645 265.619 380.59C266.344 382.644 266.437 384.313 265.037 386.134C264.243 387.168 264.108 388.685 263.41 389.82C261.995 392.123 260.402 394.313 258.774 396.709C257.38 395.209 256.269 394.01 255.315 392.983C253.087 393.614 251.23 394.136 248.837 394.813C248.095 398.664 243.563 397.658 240.789 400.18C236.642 387.918 232.625 376.041 228.357 363.424C226.314 365.788 224.623 367.548 223.17 369.485C222.029 371.008 220.8 371.435 219.007 370.868C215.815 369.858 212.585 368.97 209.077 367.944C209.66 366.438 210.147 365.205 210.614 363.964C211.834 360.716 211.703 360.36 208.739 358.646C208.417 358.46 208.127 358.219 207.697 357.916C207.8 356.766 208.22 355.47 207.932 354.354C207.65 353.258 206.649 352.35 205.858 351.204C207.598 348.718 203.584 345.495 207.127 343.144C205.47 341.388 205.727 339.885 206.129 337.868C207.244 332.306 210.604 327.948 212.964 323.059C213.864 321.195 214.238 319.076 214.985 316.636C220.519 318.294 225.967 319.923 231.813 321.673C231.813 322.925 231.843 324.138 231.805 325.35C231.719 328.363 233.063 330.605 235.472 332.29C239.158 334.864 242.848 337.43 246.827 340.203Z"
+          class="republican"
+          fill="white"></path>
+        <path id="p15"
+          d="M213.909 316.309C212.917 319.148 212.223 321.501 211.265 323.745C210.534 325.455 209.662 327.179 208.508 328.626C206.002 331.771 205.225 335.688 204.558 339.301C204.079 341.894 204.527 344.941 204.457 347.793C204.427 349.059 204.713 350.33 204.927 352.261C206.409 353.385 208.223 355.154 205.513 357.898C207.183 358.98 208.622 359.91 210.393 361.061C209.569 363.15 208.77 365.176 207.797 367.643C193.923 363.751 180.309 359.934 166.42 356.039C167.749 353.635 168.82 351.671 169.917 349.721C175.065 340.581 179.977 331.298 185.482 322.376C187.929 318.409 191.528 315.138 194.718 311.654C195.165 311.168 196.365 310.975 197.063 311.179C202.437 312.734 207.773 314.42 213.909 316.309Z"
+          class="republican"
+          fill="white"></path>
+        <path id="p14"
+          d="M159.272 364.567C140.255 355.369 121.658 346.377 102.71 337.216C114.147 321.169 125.35 305.449 136.798 289.384C155.79 296.282 174.717 303.156 194.243 310.246C192.452 312.151 191.107 313.726 189.61 315.139C186.949 317.659 184.925 320.591 183.158 323.792C177.664 333.732 172.105 343.638 166.437 353.482C164.328 357.146 161.852 360.599 159.272 364.567Z"
+          class="democrat"
+          fill="white"></path>
+        <path id="p13"
+          d="M135.65 288.981C124.119 305.16 112.977 320.791 101.611 336.74C80.8424 329.51 60.1561 322.308 39.4199 315.092C39.3199 313.863 39.1561 312.717 39.1686 311.576C39.1724 311.152 39.5486 310.702 39.8311 310.322C42.0336 307.376 44.2436 304.431 46.4811 301.511C47.6061 300.042 48.8399 298.655 49.9399 297.171C50.8911 295.887 51.7261 294.518 52.1936 293.815C54.9336 292.391 57.1499 291.34 59.2661 290.113C62.4686 288.256 65.6124 286.293 68.7524 284.328C69.2499 284.02 69.6649 283.513 69.9949 283.017C70.4799 282.292 70.8799 281.51 71.2674 280.727C72.9699 277.275 74.4624 273.671 78.6261 272.343C79.2874 272.133 79.7899 271.431 80.6699 270.706C98.6624 276.687 116.839 282.727 135.65 288.981Z"
+          class="democrat"
+          fill="white"></path>
+        <path id="p12"
+          d="M232.02 320.527C220.211 316.956 208.57 313.435 197.03 309.945C196.738 304.49 203.956 262.574 206.518 254.85C223.708 260.96 240.888 267.066 258.041 273.165C257.416 275.999 256.535 278.577 256.35 281.206C256.108 284.592 259.898 284.55 261.69 286.532C261.012 288.612 260.335 290.729 259.625 292.835C259.39 293.532 259.067 294.2 258.67 295.161C255.76 293.851 252.978 292.597 249.822 291.179C243.898 300.945 238.041 310.6 232.02 320.527Z"
+          class="republican"
+          fill="white"></path>
+        <path id="p11"
+          d="M204.915 254.53C201.69 272.576 198.449 290.704 195.121 309.32C178.296 303.211 161.48 297.109 144.748 291.031C148.946 271.838 153.09 252.899 157.243 233.915C173.123 240.78 188.88 247.598 204.915 254.53Z"
+          class="democrat"
+          fill="white"></path>
+        <path id="p10"
+          d="M142.91 290.194C122.045 283.251 101.35 276.361 80.5778 269.446C79.8778 266.552 80.1616 264.121 82.2991 261.828C83.6128 260.416 84.3441 258.461 85.3416 256.753C86.1478 255.371 86.7841 253.837 87.8103 252.646C89.3691 250.833 89.7853 248.967 88.9553 246.772C88.7791 246.304 88.6903 245.794 88.4603 245.359C87.1403 242.861 87.1853 240.451 88.5478 237.932C90.5903 234.154 90.0391 230.208 88.9353 226.287C88.5628 224.968 87.8341 223.668 87.8203 222.353C87.8028 220.906 88.4178 219.454 88.7603 218.004C89.2153 216.076 91.0553 216.404 92.3278 215.791C93.7728 215.093 95.1716 214.296 97.1053 213.271C116.38 219.717 136.102 226.314 155.73 232.881C154.848 241.911 145.392 284.278 142.91 290.194Z"
+          class="republican"
+          fill="white"></path>
+        <path id="p9"
+          d="M206.789 253.276C217.494 237.71 228.15 222.22 239.042 206.384C252.593 211.828 265.954 217.191 279.134 222.485C279.853 224.933 279.372 226.846 278.597 228.929C276.383 234.88 274.324 240.901 272.517 246.989C271.27 251.189 269.892 255.286 267.815 259.158C265.64 263.211 263.385 267.261 263.363 272.543C261.478 272.353 259.819 272.498 258.387 271.994C241.577 266.083 224.799 260.075 208.018 254.081C207.7 253.968 207.439 253.708 206.789 253.276Z"
+          class="republican"
+          fill="white"></path>
+        <path id="p8"
+          d="M185.867 191.731C203.041 196.451 220.205 201.167 237.859 206.02C226.955 221.88 216.272 237.419 205.482 253.117C189.351 246.832 173.519 240.246 157.786 232.387C158.562 231.154 159.23 230.012 159.975 228.927C167.11 218.54 174.272 208.174 181.38 197.77C182.135 196.665 182.776 195.411 183.137 194.134C183.607 192.476 183.94 190.75 182.124 189.42C181.269 188.795 180.936 187.571 182.061 186.902C183.201 186.224 184.27 186.801 184.757 188.025C185.169 189.052 185.405 190.151 185.867 191.731Z"
+          class="democrat"
+          fill="white"></path>
+        <path id="p7"
+          d="M155.921 231.754C150.14 229.809 144.246 227.809 138.34 225.847C125.091 221.453 111.839 217.068 98.5811 212.699C94.0311 211.2 93.3973 210.204 94.1448 205.099C97.0711 204.573 98.4336 202.312 99.6061 199.74C100.974 196.743 103.132 194.455 105.879 192.504C109.089 190.223 112.169 187.638 114.834 184.75C117.295 182.084 116.595 178.42 116.477 175.08C116.409 173.134 116.182 171.197 115.996 168.864C120.7 168.529 122.779 165.504 124.456 161.66C126.657 162.743 128.745 163.787 130.846 164.804C146.216 172.263 161.594 179.702 176.947 187.19C178.265 187.829 179.609 188.585 180.647 189.59C182.671 191.544 182.785 193.135 181.48 195.584C181.421 195.694 181.344 195.792 181.271 195.895C173.11 207.699 164.951 219.502 156.784 231.303C156.724 231.393 156.571 231.419 155.921 231.754Z"
+          class="democrat"
+          fill="white"></path>
+        <path id="p6"
+          d="M187.224 190.935C184.877 186.823 184.792 182.729 184.66 178.593C184.3 167.236 183.799 155.884 183.362 144.531C183.32 143.426 183.356 142.32 183.356 140.739C206.889 143.821 229.875 149.01 253.292 150.734C253.576 155.075 241.979 196.584 238.167 204.875C221.115 200.21 203.976 195.519 187.224 190.935Z"
+          class="republican"
+          fill="white"></path>
+        <path id="p5"
+          d="M183.591 185.103C182.222 185.666 180.921 186.205 179.171 186.926C161.264 178.266 142.644 169.856 124.344 160.134C125.387 159.139 126.159 158.401 126.947 157.651C124.708 155.495 122.307 155.141 119.428 156.593C119.298 154.438 119.207 152.584 119.072 150.734C118.884 148.143 118.987 145.541 117.421 143.171C116.433 141.681 116.811 140.084 118.372 138.896C119.554 137.996 120.644 136.975 121.761 136.021C121.634 129.424 121.634 129.424 125.322 128.536C125.641 126.851 125.951 125.221 126.303 123.356C128.119 124.128 129.494 124.714 131.153 125.419C131.598 123.598 131.914 122.308 132.317 120.659C133.604 121.32 134.703 121.83 135.751 122.426C142.471 126.261 149.178 130.114 155.889 133.96C156.647 134.395 157.419 134.809 158.156 135.275C159.268 135.978 160.333 135.913 161.166 134.923C162.153 133.753 161.779 132.6 160.802 131.59C159.973 130.738 159.121 129.908 158.179 128.969C159.679 127.068 161.289 126.778 162.968 127.83C168.996 131.596 174.988 135.419 180.917 139.335C181.603 139.788 182.158 140.944 182.194 141.799C182.782 155.895 183.279 169.994 183.783 184.093C183.796 184.45 183.648 184.815 183.591 185.103Z"
+          class="democrat"
+          fill="white"></path>
+        <path id="p4"
+          d="M252.151 98.9417C248.875 115.525 245.666 131.775 242.385 148.388C240.505 148.277 238.77 148.315 237.082 148.048C219.839 145.32 202.602 142.544 185.366 139.763C184.9 139.69 184.464 139.428 183.55 139.074C190.314 117.295 197.051 95.5979 203.894 73.5642C220.542 81.3854 236.24 89.9954 252.151 98.9417Z"
+          class="democrat"
+          fill="white"></path>
+        <path id="p3"
+          d="M159.967 134.473C159.217 134.204 158.406 134.038 157.724 133.65C150.457 129.517 143.191 125.378 135.961 121.178C131.911 118.825 131.811 113.043 135.749 110.587C136.979 109.819 138.311 109.215 139.866 108.393C138.846 107.205 138.017 106.243 137.18 105.27C138.236 103.249 140.324 104.524 141.975 103.089C142.319 102.428 142.785 101.094 143.605 100.035C145.361 97.7665 146.557 95.5803 143.61 93.1678C145.63 91.9778 147.029 90.7153 149.052 92.2628C150.04 93.019 151.381 92.8215 151.915 91.6265C152.439 90.449 151.725 89.5453 150.519 88.9965C149.524 88.5428 148.622 87.8903 147.216 87.0478C150.786 85.9103 152.821 84.0678 152.641 80.5228C152.527 78.2953 150.68 78.2778 149.194 77.454C148.284 78.849 147.442 80.1365 146.61 81.414C143.791 79.6978 142.096 75.554 142.667 72.2903C142.731 71.924 143.01 71.5728 142.996 71.2228C142.797 66.5703 145.996 65.1903 149.822 64.204C150.265 63.179 150.749 62.0528 151.306 60.7565C145.996 57.5565 148.442 52.5253 147.886 48.0415C150.931 48.224 194.162 68.1078 202.795 73.1753C196.076 94.8128 189.326 116.553 182.495 138.55C176.942 135.068 171.712 131.774 166.466 128.512C165.306 127.788 164.135 127.023 162.867 126.552C162.001 126.229 160.842 126.079 160.025 126.397C158.969 126.805 157.701 127.592 157.33 128.534C157.071 129.192 158.072 130.443 158.675 131.315C159.247 132.14 160.034 132.815 160.726 133.555C160.474 133.862 160.221 134.168 159.967 134.473Z"
+          class="republican"
+          fill="white"></path>
+        <path id="p2"
+          d="M226.9 83.5742C225.219 82.7705 223.891 82.163 222.585 81.508C217.452 78.9405 212.39 76.2292 207.176 73.8405C204.834 72.768 203.917 71.2367 203.589 68.7955C202.072 57.5442 200.424 46.3092 198.805 35.073C198.342 31.863 197.77 28.6667 197.351 25.4517C197.094 23.4867 200.166 18.868 202.002 18.4567C202.677 18.3067 203.497 18.4855 204.179 18.723C216.425 22.9817 228.661 27.2705 240.894 31.5705C241.461 31.7692 241.97 32.1367 242.779 32.573C237.505 49.5105 232.256 66.3692 226.9 83.5742Z"
+          class="republican"
+          fill="white"></path>
+        <path id="p1"
+          d="M143.658 10.8602C145.883 11.9189 148.009 12.9301 150.394 14.0664C152.853 11.8176 155.311 9.5689 157.819 7.27515C157.006 5.85765 156.294 4.6189 155.634 3.47015C158.301 2.34265 160.706 1.3239 163.742 0.0401488C164.381 0.343899 165.723 0.9489 167.033 1.61765C175.037 5.7039 182.992 9.88515 191.054 13.8551C193.622 15.1189 194.918 16.6002 195.331 19.6589C197.183 33.3851 199.422 47.0601 201.479 60.7601C201.977 64.0701 202.314 67.4064 202.784 71.2126C201.434 70.7439 200.513 70.5126 199.669 70.1164C183.408 62.4751 167.158 54.8126 150.902 47.1614C149.557 46.5289 148.013 46.1264 147.909 44.2364C142.463 40.0964 142.696 32.7551 138.636 27.7551C137.177 25.9564 138.003 23.3377 139.579 21.5614C140.863 20.1127 141.353 18.5701 141.144 16.7651C140.876 14.4651 141.619 12.6214 143.658 10.8602Z"
+          class="democrat"
+          fill="white"></path>
+      </svg>
+
+      <div id="output">
+        $$
+        \begin{aligned}
+        & i = ? \\
+        & j = ? \\
+        & p_{i j} = \;? \\
+        & x_{i \text{ a}} = \;? \\
+        & x_{i \text{ b}} = \;? \\
+        & x_{i \text{ c}} = \;? \\
+        & x_{i \text{ d}} = \;? \\
+        \end{aligned}
+        $$
+      </div>
+    </div>
+    <h2>
+      Variables
+    </h2>
+    <p>
+      Here is a list of the variable used in the model! Many of them are binary, which means that they can only take on the 
+      $$
+      \begin{align*}
+      x_{ij} &= \begin{cases}
+      1 & \text{ if unit $i$ is in district $j$ } \\
+      0 & \text{ if unit $i$ is not in district $j$ }
+      \end{cases} \\
+
+      p_{ij} &= \begin{cases}
+      1 & \text{ if unit $i$ can be in district $j$ } \\
+      0 & \text{ if unit $i$ cannot be in district $j$ }
+      \end{cases} \\
+
+      y_{j} &= \begin{cases}
+      1 & \text{ if there are more Democrats than Republicans in district }j\\
+      0 & \text{ if there are more Republicans than Democrats in district }j
+      \end{cases} \\
+
+      v_i &= \text{total number of voters in unit }i \\
+
+      s_{ik} &= \begin{cases}
+      1 & \text{ if units $i$ and $k$ are adjacent} \\
+      0 & \text{ if they are not adjacent}
+      \end{cases}
+      \end{align*}
+      $$
+    </p>
+
+    <h2>
+      Fairness
+    </h2>
+
+    <p>
+      We want to make the gerrymandering as "fair" as possible. But in order to do this, we have to define what "fair" really means so that we can translate it into a mathematical optimization problem. We are going to say that the population of each district should be as close as possible to its target. In math terms, we want to minimize
+      $$z = \max_{j} \left| \left(\sum_{i} x_{ij}v_i\right) - \text{Target} \right|.$$
+      Observe that the sum is the total number of voters in district $j$. Unfortunately, the absolute value prevents
+      this function $z$ from being linear in our decision variables $x_{ij}$. Instead, we may break this nonlinear
+      equation into two linear inequalities (constraints):
+      $$
+      \begin{align*}
+      z &\ge \left(\sum_{i} x_{ij}v_i\right) - \text{Target} \\
+      z &\ge \text{Target} - \left(\sum_{i} x_{ij}v_i\right).
+      \end{align*}
+      $$
+    </p>
+
+    <h2>
+      Housekeeping
+    </h2>
+    <p>
+      We have a few simple constraints that we include in order to keep the model from breaking. For example, something that hopefully seems self-explanatory is that each unit $i$ can only be assigned to exactly one district
+      $j$. It wouldn't be fair if some units were represented more than others! We can write this mathematically as
+      $$ \sum_j x_{ij} = 1$$
+      for all units $i$.
+    </p>
+    <h2>
+      Compactness
+    </h2>
+    <p>
+      To keep a district from being too big, we can set a maximum distance between units within the same district, called $\text{maxdist}$. The way we implement these constraints is to say that for all units $i,k$ who are
+      separated by more than $\text{maxdist}$,
+      $$ x_{ij} + x_{kj} \le 1.$$
+      There can be at most one of $i$ and $k$ in district $j$.
+    </p>
+    <p>
+      In addition to this, we attempt to minimize the number of "cut edges," or pairs of adjacent units that are in separate districts. To do this, we first define a binary variable $s_{ik}$ that indicates whether two adjacent units are in the same district. We have
+      $$ s_{ik} \ge x_{ij} + x_{kj} - 1$$
+      and
+      $$
+      s_{ik} \le \frac{1}{2} (x_{ij} + x_{ik}) + (1 - w_{ikj}).
+      $$
+      Additionally,
+      $$ \sum_j w_{ikj} \ge 1$$
+      and
+      $$ \sum_{(i,k)} (1-s_{ik}) \le \text{MaxCut}$$
+      for all adjacent districts $i$ and $k$, where $\text{MaxCut}$ is the greatest allowed number of cut edges for a
+      district.
+    </p>
+    <h2>
+      Contiguity
+    </h2>
+    <p>
+      Something that may be a little harder to grasp is how we require a district to be contiguous, or that between any two units in a district, there is a path between them made up of other adjacent units. Suppose that we have two units $k$ and $\ell$ in a district $j$ that are separated by a distance $d \le \text{MaxDist}$. Then we require that there is some other unit $i$ that is a distance $1$ from $k$ and $d-1$ from $\ell$ to also be in district $j$. We write this mathematically as
+      $$ \sum_i x_{ij} \ge x_{kj} + x_{\ell j} - 1,$$
+      where we sum over all units $i$ within distance $1$ of $k$ and $d-1$ of $\ell$.
+    </p>
+    <h2>
+      Political Distribution
+    </h2>
+    <p>
+      We now turn our attention to the political distribution of the districts. In particular, we would like an equation that constrains $y_i$, a binary variable that indicates whether Democrat or Republican is dominant. Under the following constraint, if Democrat is dominant, $y_1$ is forced to be 1:
+      $$
+      \text{total} \cdot y_j \ge \sum_{i} x_{ij}(\text{Democrat}_i - \text{Republican}_i)
+      $$
+      Similarly, if Republican is dominant, $y_1$ is forced to be 0:
+      $$
+      \text{total} \cdot (1-y_j) \ge \sum_{i} x_{ij}(\text{Republican}_i - \text{Democrat}_i)
+      $$
+    </p>
+
+    <p>
+      Now that we can measure the number districts that favor Democrat over Republican, we can constrain them to lie within a window of width $\epsilon$ within $\text{Target}$:
+      $$
+      \begin{align*}
+      \sum_j y_j &\le \text{Target} + \epsilon \\
+      \sum_j y_j &\ge \text{Target} - \epsilon
+      \end{align*}
+      $$
+    </p>
+
+    <h1>Controversies</h1>
+    <p>
+      There are a few questions to to the problem of redistricting whose answers spark some disagreement, including:
+      <ul>
+        <li>What does it mean for a districting to be fair? Is it even possible to make a ‘fair’ districting? How do we account for unavoidable features, such as districts with unequal populations or nonstandard geography or topography?</li>
+        <li>For each criterion, what metric best determines how well a map satisfies said criterion? For example, when measuring compactness of districts, should we look at the number of cut edges, or should we look at the area of the smallest circle or rectangle that circumscribes the district?</li>
+        <li>What units should we use? Should they be as big as counties, or as small as census blocks? If we choose bigger units, how do we account for the unequal district populations? If we choose smaller units, how do we rewrite the rest of the model to let it run reasonably quickly?</li>
+        <li>In integer programming, what should the goal (that we’re trying to maximize) be? Should it be population equality, compactness, or competitiveness, or a mixture of multiple? How should the constraints of the other criteria be factored? If the goal includes multiple criteria, how should they be weighted?</li>
+      </ul>
+    </p>
+
+    <h1>Analysis</h1>
+    <p>
+      We disagreed a lot on the upsides and downsides of using redistricting algorithms. Here are a few of the core
+      questions we thought about:
+    <ul>
+      <li>Currently, the biggest problem with these algorithms is that they are extremely slow; in Repairing
+        Redistricting, for example, the authors were forced to use just 100 to 105 units because of the processing power
+        that they had, which is not enough to provide the best maps possible in states which allow for a unit to be
+        smaller than a county. However, this will likely be solved somewhat over the next few decades due to advances in
+        computer technology, and could potentially be solved even more quickly if the United States deems redistricting
+        important enough for it to let redistricting algorithms spend a lot of time running on supercomputers.</li>
+      <li>Computer-based redistricting does get rid of overt partisan fights over where the lines will be drawn.
+        However, as mentioned in the previous section, there are many different ways for a redistricting algorithm to be
+        created, and different ones may show consistent bias to one party over another. This comes with the disadvantage
+        of less transparency regarding the process of redistricting, as it is hard for the general public to understand,
+        for example, why using the efficiency gap metric of competitiveness, rather than the partisan symmetry metric,
+        would be better for Democrats.</li>
+      <li>Computer-based redistricting could cause the district lines to completely change every ten years (as opposed
+        to current systems, which mostly try to minimize such change). This could cause considerable social upheaval, as
+        constituents and incumbents would have to deal with constantly-shifting districts. While minimizing this change
+        could be encoded as a goal, it would add even more complexity to our models which are already having difficulty
+        drawing fair districts in a reasonable amount of time.</li>
+    </ul>
+    </p>
+
+    <h3>Works Cited</h3>
+    <p>
+    <ul>
+      <li>Carman, B. A. (2021). <i>Repairing Redistricting: Using an Integer Linear Programming Model to Optimize
+          Fairness in Congressional Districts</i> (Doctoral dissertation, Ohio University).</li>
+      <li>Ingraham, C. (2015). This is the Best <b>E</b>xplanation of Gerrymandering you will ever See. <i>The Washington
+          Post</i>.</li>
+      <li>Landau, Z., Reid, O., & Yershov, I. (2009). <b>A</b> Fair Division <b>S</b>olution to the Problem of Redistricting.
+        <i>Social Choice and Welfare</i>, 32(3), 479-492.</li>
+      <li>Mighdoll, M., Brower, J., Khaishgi, M. & Zi<b>t</b>zewitz, Z. (1982). <i>Gerrymand<b>er</b>ing is Bad: Easter Egg Number Five Keeping Districts Good</i> (Stunning Thesis Defense, Corollary Coll<b>eg</b>e).</li>
+      <li>Na<b>g</b>el, S. S. (19<b>7</b>2). Computers & the Law & Politics of Redistricting. <i>Polity</i>, 5(1), 77-93.</li>
+      <li>Oliver, John. Last Week Tonight. (2017, April 9). <i>Gerrymandering: Last Week Tonight with John Oliver
+          (HBO)</i> [Video]. YouTube. <a
+          href="https://www.youtube.com/watch?v=A-4dIImaodQ">https://www.youtube.com/watch?v=A-4dIImaodQ</a> </li>
+      <li>Weaver, J. B., & Hess, S. W. (1963). A Procedure for Nonpartisan Districting: Development of Computer
+        Techniques. <i>Yale LJ</i>, 73, 288.</li>
+    </ul>
+    </p>
+    <p>
+      <a href="https://etd.ohiolink.edu/apexprod/rws_etd/send_file/send?accession=ouhonors1619177994406176">
+        Repairing Redistricting: Using an Integer Linear Programming Model to Optimize Fairness in Congressional
+        Districts (2021)
+      </a>
+    </p>
+
+    <p>
+      <a href="https://scholarship.law.duke.edu/cgi/viewcontent.cgi?article=1026&context=djclpp">The promise and perils
+        of computers in redistricting (2010)</a>
+    </p>
+
+    <p>
+      <a href="https://authors.library.caltech.edu/95824/"> Fair redistricting is hard (2019) </a>
+    </p>
+    <p>
+      <a href="https://www.jstor.org/stable/3234042"> Computers and the Law and Politics of Redistricting (1972) </a>
+    </p>
+    <p>
+      <a href="https://people.eecs.berkeley.edu/~landau/papers/redistrictingfinalpreprint.pdf"> A Fair Division Solution
+        to the Problem of Redistricting (2009) </a>
+    </p>
+  </div>
+  <script src="script.js" type="module"></script>
+</body>
+
+</html>
